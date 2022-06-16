@@ -53,9 +53,9 @@ public class ParsingHelper {
         List<String> split = splitString(info);
         LocalDateTime start = LocalDateTime.parse(split.get(0));
         LocalDateTime end = LocalDateTime.parse(split.get(1));
-        int visitorID = Integer.parseInt(split.get(2));
-        int placeID = Integer.parseInt(split.get(3));
-        visits.add(new Besuch(start, end, visitorID, placeID));
+        Person visitor = getPersonByID(Integer.parseInt(split.get(2)));
+        Ort place = getPlaceByID(Integer.parseInt(split.get(3)));
+        visits.add(new Besuch(start, end, visitor, place));
     }
 
     private Person createPerson(List<String> info) {
@@ -75,6 +75,14 @@ public class ParsingHelper {
         return Arrays.stream(info.split(","))
                 .map(string -> string.replaceAll("\"", "").trim())
                 .toList();
+    }
+
+    private Person getPersonByID(int id) {
+        return people.stream().filter(person -> person.getId() == id).toList().get(0);
+    }
+
+    private Ort getPlaceByID(int id) {
+        return places.stream().filter(place -> place.getId() == id).toList().get(0);
     }
 
     public List<Person> getPeople() {

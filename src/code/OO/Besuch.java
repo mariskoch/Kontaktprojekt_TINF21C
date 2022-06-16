@@ -5,18 +5,34 @@ import java.time.LocalDateTime;
 public class Besuch {
     private final LocalDateTime start;
     private final LocalDateTime end;
-    private final int visitorID;
-    private final int placeID;
+    private final Person visitor;
+    private final Ort place;
 
-    public Besuch(LocalDateTime start, LocalDateTime end, int visitorID, int placeID) {
+    public Besuch(LocalDateTime start, LocalDateTime end, Person visitor, Ort place) {
         this.start = start;
         this.end = end;
-        this.visitorID = visitorID;
-        this.placeID = placeID;
+        this.visitor = visitor;
+        this.place = place;
     }
 
     @Override
     public String toString() {
-        return start.toString() + "\t" + end.toString() + "\t" + visitorID + "\t" + placeID;
+        return start.toString() + "\t" + end.toString() + "\t" + visitor + "\t" + place;
+    }
+
+    public LocalDateTime getStart() {
+        return start;
+    }
+
+    public LocalDateTime getEnd() {
+        return end;
+    }
+
+    public Person getVisitor() {
+        return visitor;
+    }
+
+    public Ort getPlace() {
+        return place;
     }
 }
