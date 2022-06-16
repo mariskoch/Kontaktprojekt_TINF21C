@@ -33,6 +33,9 @@ public class ContactTracingManager {
 
     public void findPlace(String arg) {
         List<String> parsedArgs = parseArgument(arg);
+        places.stream()
+                .filter(place -> place.getName().toLowerCase().contains(parsedArgs.get(0).toLowerCase()))
+                .forEach(System.out::println);
     }
 
     public void contactPerson(String arg) {
