@@ -30,35 +30,45 @@ public class ParsingHelper {
                 return;
             }
             switch (classFlag[0]) {
-                case 0 -> people.add(createPerson(string));
-                case 1 -> places.add(createPlace(string));
-                case 2 -> visits.add(createVisit(string));
+                case 0 -> addPersonToArray(string);
+                case 1 -> addPlaceToArray(string);
+                case 2 -> addVisitToArray(string);
             }
         });
     }
 
-    private Person createPerson(String info) {
+    private void addPersonToArray(String info) {
         List<String> split = splitString(info);
-        int id = Integer.parseInt(split.get(0));
-        String name = split.get(1);
-        return new Person(id, name);
+        boolean doesExistAlready = people.stream().anyMatch(person -> person.getId() == Integer.parseInt(split.get(0)));
+        if (!doesExistAlready) people.add(createPerson(split));
     }
 
-    private Ort createPlace(String info) {
+    private void addPlaceToArray(String info) {
         List<String> split = splitString(info);
-        int id = Integer.parseInt(split.get(0));
-        String name = split.get(1);
-        boolean isOutside = split.get(2).equalsIgnoreCase("out_door");
-        return new Ort(id, name, isOutside);
+        boolean doesExistAlready = places.stream().anyMatch(place -> place.getId() == Integer.parseInt(split.get(0)));
+        if (!doesExistAlready) places.add(createPlace(split));
     }
 
-    private Besuch createVisit(String info) {
+    private void addVisitToArray(String info) {
         List<String> split = splitString(info);
         LocalDateTime start = LocalDateTime.parse(split.get(0));
         LocalDateTime end = LocalDateTime.parse(split.get(1));
         int visitorID = Integer.parseInt(split.get(2));
         int placeID = Integer.parseInt(split.get(3));
-        return new Besuch(start, end, visitorID, placeID);
+        visits.add(new Besuch(start, end, visitorID, placeID));
+    }
+
+    private Person createPerson(List<String> info) {
+        int id = Integer.parseInt(info.get(0));
+        String name = info.get(1);
+        return new Person(id, name);
+    }
+
+    private Ort createPlace(List<String> info) {
+        int id = Integer.parseInt(info.get(0));
+        String name = info.get(1);
+        boolean isOutside = info.get(2).equalsIgnoreCase("out_door");
+        return new Ort(id, name, isOutside);
     }
 
     private List<String> splitString(String info) {

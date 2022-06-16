@@ -3,6 +3,7 @@ package code;
 import code.OO.Besuch;
 import code.OO.Ort;
 import code.OO.Person;
+import code.utils.DebugUtils;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class ContactTracingManager {
         this.people = people;
         this.places = places;
         this.visits = visits;
+        DebugUtils.debug(this.people, this.places, this.visits);
     }
 
     private String[] parseArgument(String arg) {

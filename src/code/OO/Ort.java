@@ -15,4 +15,16 @@ public class Ort {
     public String toString() {
         return id + "\t" + name + "\t" + isOutside;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isOutside() {
+        return isOutside;
+    }
 }
