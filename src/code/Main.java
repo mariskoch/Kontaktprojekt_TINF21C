@@ -4,7 +4,6 @@ public class Main {
 
     public static void main(String[] args) {
         final String FILEPATH = "resources/contacts2021.db";
-        //final String FILEPATH = "resources/test.db";
         ParsingHelper ph = new ParsingHelper(FILEPATH);
 
         ContactTracingManager ctm = new ContactTracingManager(
