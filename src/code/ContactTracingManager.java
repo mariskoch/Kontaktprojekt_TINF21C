@@ -53,10 +53,12 @@ public class ContactTracingManager {
                             doVisitsOverlap(personVisit, generalVisit) &&
                                     areVisitsInSamePlace(personVisit, generalVisit) &&
                                     isNotSameVisit(personVisit, generalVisit) &&
+                                    isNotSamePerson(personVisit, generalVisit) &&
                                     !personVisit.getPlace().isOutside()).toList();
                     return visitsByPersonMatching.contains(true);
                 })
                 .map(visit -> visit.getVisitor().getName())
+                .distinct()
                 .toList());
         Collections.sort(peopleMet);
         peopleMet.forEach(name -> sb.append(name).append(", "));
@@ -78,6 +80,10 @@ public class ContactTracingManager {
 
     private boolean isNotSameVisit(Besuch visit1, Besuch visit2) {
         return !visit1.equals(visit2);
+    }
+
+    private boolean isNotSamePerson(Besuch visit1, Besuch visit2) {
+        return !visit1.getVisitor().getName().equalsIgnoreCase(visit2.getVisitor().getName());
     }
 
 }
