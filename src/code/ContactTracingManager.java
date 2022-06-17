@@ -23,23 +23,28 @@ public class ContactTracingManager {
                 .toList();
     }
 
-    public void findPerson(String arg) {
+    public String findPerson(String arg) {
+        StringBuilder sb = new StringBuilder();
         List<String> parsedArgs = parseArgument(arg);
         people.stream()
                 .filter(person -> person.getName().toLowerCase().contains(parsedArgs.get(0).toLowerCase()))
-                .forEach(System.out::println);
+                .forEach(person -> sb.append(person).append("\n"));
+        return sb.toString();
     }
 
-    public void findPlace(String arg) {
+    public String findPlace(String arg) {
+        StringBuilder sb = new StringBuilder();
         List<String> parsedArgs = parseArgument(arg);
         places.stream()
                 .filter(place -> place.getName().toLowerCase().contains(parsedArgs.get(0).toLowerCase()))
-                .forEach(System.out::println);
+                .forEach(place -> sb.append(place).append("\n"));
+        return sb.toString();
     }
 
-    public void contactPerson(String arg) {
+    public String contactPerson(String arg) {
+        StringBuilder sb = new StringBuilder();
         List<String> parsedArgs = parseArgument(arg);
-        var visitsByPerson = visits.stream()
+        List<Besuch> visitsByPerson = visits.stream()
                 .filter(visit -> visit.getVisitor().getId() == Integer.parseInt(parsedArgs.get(0)))
                 .toList();
         List<String> peopleMet = new ArrayList<>(visits.stream()
@@ -54,7 +59,9 @@ public class ContactTracingManager {
                 .map(visit -> visit.getVisitor().getName())
                 .toList());
         Collections.sort(peopleMet);
-        System.out.println(peopleMet);
+        peopleMet.forEach(name -> sb.append(name).append(", "));
+        sb.setLength(sb.length()-2);
+        return sb.toString();
     }
 
     public void visitor(String arg) {

@@ -16,11 +16,11 @@ public class Main {
             System.out.println("Invalid amount of arguments. Please enter one argument of:\n" +
                     "\"--personensuche=\", \"--ortssuche=\", \"--kontaktperson=\", \"--besucher=\"");
         } else if (args[0].startsWith("--personensuche=")) {
-            ctm.findPerson(args[0]);
+            System.out.println(ctm.findPerson(args[0]));
         } else if (args[0].startsWith("--ortssuche=")) {
-            ctm.findPlace(args[0]);
+            System.out.println(ctm.findPlace(args[0]));
         } else if (args[0].startsWith("--kontaktperson")) {
-            ctm.contactPerson(args[0]);
+            System.out.println(ctm.contactPerson(args[0]));
         } else if (args[0].startsWith("--besucher=")) {
             ctm.visitor(args[0]);
         } else {
