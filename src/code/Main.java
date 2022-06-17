@@ -12,21 +12,6 @@ public class Main {
                 ph.getVisits()
         );
 
-        if (args.length != 1) {
-            System.out.println("Invalid amount of arguments. Please enter one argument of:\n" +
-                    "\"--personensuche=\", \"--ortssuche=\", \"--kontaktperson=\", \"--besucher=\"");
-        } else if (args[0].startsWith("--personensuche=")) {
-            System.out.println(ctm.findPerson(args[0]));
-        } else if (args[0].startsWith("--ortssuche=")) {
-            System.out.println(ctm.findPlace(args[0]));
-        } else if (args[0].startsWith("--kontaktperson")) {
-            System.out.println(ctm.contactPerson(args[0]));
-        } else if (args[0].startsWith("--besucher=")) {
-            ctm.visitor(args[0]);
-        } else {
-            System.out.println("Unknown argument.");
-        }
-
+        System.out.println(ctm.processInput(args));
     }
-
 }

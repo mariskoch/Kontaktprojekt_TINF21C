@@ -17,13 +17,24 @@ public class ContactTracingManager {
         this.visits = visits;
     }
 
-    private List<String> parseArgument(String arg) {
-        return Arrays.stream(arg.split("=")[1].split(","))
-                .map(string -> string.replaceAll("\"", "").trim())
-                .toList();
+    public String processInput(String[] args) {
+        if (args.length != 1) {
+            throw new RuntimeException("Invalid amount of arguments. Please enter one argument of:\n" +
+                    "\"--personensuche=\", \"--ortssuche=\", \"--kontaktperson=\", \"--besucher=\"");
+        } else if (args[0].startsWith("--personensuche=")) {
+            return findPerson(args[0]);
+        } else if (args[0].startsWith("--ortssuche=")) {
+            return findPlace(args[0]);
+        } else if (args[0].startsWith("--kontaktperson")) {
+            return contactPerson(args[0]);
+        } else if (args[0].startsWith("--besucher=")) {
+            return visitor(args[0]);
+        } else {
+            return "Unknown argument";
+        }
     }
 
-    public String findPerson(String arg) {
+    private String findPerson(String arg) {
         StringBuilder sb = new StringBuilder();
         List<String> parsedArgs = parseArgument(arg);
         people.stream()
@@ -32,7 +43,7 @@ public class ContactTracingManager {
         return sb.toString();
     }
 
-    public String findPlace(String arg) {
+    private String findPlace(String arg) {
         StringBuilder sb = new StringBuilder();
         List<String> parsedArgs = parseArgument(arg);
         places.stream()
@@ -41,7 +52,7 @@ public class ContactTracingManager {
         return sb.toString();
     }
 
-    public String contactPerson(String arg) {
+    private String contactPerson(String arg) {
         StringBuilder sb = new StringBuilder();
         List<String> parsedArgs = parseArgument(arg);
         List<Besuch> visitsByPerson = visits.stream()
@@ -61,12 +72,18 @@ public class ContactTracingManager {
                 .toList());
         Collections.sort(peopleMet);
         peopleMet.forEach(name -> sb.append(name).append(", "));
-        sb.setLength(sb.length()-2);
+        sb.setLength(sb.length() - 2);
         return sb.toString();
     }
 
-    public void visitor(String arg) {
+    private String visitor(String arg) {
+        return "Not implemented yet";
+    }
 
+    private List<String> parseArgument(String arg) {
+        return Arrays.stream(arg.split("=")[1].split(","))
+                .map(string -> string.replaceAll("\"", "").trim())
+                .toList();
     }
 
     private boolean doVisitsOverlap(Besuch visit1, Besuch visit2) {
