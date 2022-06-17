@@ -52,7 +52,6 @@ public class ContactTracingManager {
                     List<Boolean> visitsByPersonMatching = visitsByPerson.stream().map(personVisit ->
                             doVisitsOverlap(personVisit, generalVisit) &&
                                     areVisitsInSamePlace(personVisit, generalVisit) &&
-                                    isNotSameVisit(personVisit, generalVisit) &&
                                     isNotSamePerson(personVisit, generalVisit) &&
                                     !personVisit.getPlace().isOutside()).toList();
                     return visitsByPersonMatching.contains(true);
@@ -76,10 +75,6 @@ public class ContactTracingManager {
 
     private boolean areVisitsInSamePlace(Besuch visit1, Besuch visit2) {
         return visit1.getPlace().equals(visit2.getPlace());
-    }
-
-    private boolean isNotSameVisit(Besuch visit1, Besuch visit2) {
-        return !visit1.equals(visit2);
     }
 
     private boolean isNotSamePerson(Besuch visit1, Besuch visit2) {
