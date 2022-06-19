@@ -4,7 +4,12 @@ import code.OO.Besuch;
 import code.OO.Ort;
 import code.OO.Person;
 
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ContactTracingManager {
     private final List<Person> people;
@@ -18,47 +23,48 @@ public class ContactTracingManager {
     }
 
     public String processInput(String[] args) {
+        List<String> parsedArgs;
         if (args.length != 1) {
             throw new RuntimeException("Invalid amount of arguments. Please enter one argument of:\n" +
                     "\"--personensuche=\", \"--ortssuche=\", \"--kontaktperson=\", \"--besucher=\"");
-        } else if (args[0].startsWith("--personensuche=")) {
-            return findPerson(args[0]);
+        } else {
+            parsedArgs = parseArgument(args[0]);
+        }
+
+        if (args[0].startsWith("--personensuche=")) {
+            return findPerson(parsedArgs);
         } else if (args[0].startsWith("--ortssuche=")) {
-            return findPlace(args[0]);
+            return findPlace(parsedArgs);
         } else if (args[0].startsWith("--kontaktperson")) {
-            return contactPerson(args[0]);
+            return castToOutputFormat(contactPerson(parsedArgs));
         } else if (args[0].startsWith("--besucher=")) {
-            return visitor(args[0]);
+            return castToOutputFormat(visitorAndContacts(parsedArgs));
         } else {
             return "Unknown argument";
         }
     }
 
-    private String findPerson(String arg) {
+    private String findPerson(List<String> parsedArgs) {
         StringBuilder sb = new StringBuilder();
-        List<String> parsedArgs = parseArgument(arg);
         people.stream()
                 .filter(person -> person.getName().toLowerCase().contains(parsedArgs.get(0).toLowerCase()))
                 .forEach(person -> sb.append(person).append("\n"));
         return sb.toString();
     }
 
-    private String findPlace(String arg) {
+    private String findPlace(List<String> parsedArgs) {
         StringBuilder sb = new StringBuilder();
-        List<String> parsedArgs = parseArgument(arg);
         places.stream()
                 .filter(place -> place.getName().toLowerCase().contains(parsedArgs.get(0).toLowerCase()))
                 .forEach(place -> sb.append(place).append("\n"));
         return sb.toString();
     }
 
-    private String contactPerson(String arg) {
-        StringBuilder sb = new StringBuilder();
-        List<String> parsedArgs = parseArgument(arg);
+    private List<String> contactPerson(List<String> parsedArgs) {
         List<Besuch> visitsByPerson = visits.stream()
                 .filter(visit -> visit.getVisitor().getId() == Integer.parseInt(parsedArgs.get(0)))
                 .toList();
-        List<String> peopleMet = new ArrayList<>(visits.stream()
+        return visits.stream()
                 .filter(generalVisit -> {
                     List<Boolean> visitsByPersonMatching = visitsByPerson.stream().map(personVisit ->
                             doVisitsOverlap(personVisit, generalVisit) &&
@@ -68,16 +74,25 @@ public class ContactTracingManager {
                     return visitsByPersonMatching.contains(true);
                 })
                 .map(visit -> visit.getVisitor().getName())
-                .distinct()
-                .toList());
-        Collections.sort(peopleMet);
-        peopleMet.forEach(name -> sb.append(name).append(", "));
-        sb.setLength(sb.length() - 2);
-        return sb.toString();
+                .distinct().sorted().collect(Collectors.toList());
     }
 
-    private String visitor(String arg) {
-        return "Not implemented yet";
+    private List<String> visitorAndContacts(List<String> parsedArgs) {
+        Ort place = getPlaceByID(Integer.parseInt(parsedArgs.get(0)));
+        LocalDateTime timeStamp = LocalDateTime.parse(parsedArgs.get(1));
+        List<Person> peopleAtPlace = visits.stream()
+                .filter(visit -> visit.getPlace().getId() == place.getId() && isDuringVisit(timeStamp, visit))
+                .map(Besuch::getVisitor)
+                .distinct()
+                .collect(Collectors.toCollection(ArrayList::new));
+        List<String> contactPeople = new ArrayList<>();
+        if (!place.isOutside()) {
+            peopleAtPlace.forEach(person -> contactPeople.addAll(contactPerson(List.of("" + person.getId()))));
+        }
+        return Stream.concat(peopleAtPlace.stream().map(Person::getName), contactPeople.stream())
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     private List<String> parseArgument(String arg) {
@@ -95,7 +110,23 @@ public class ContactTracingManager {
     }
 
     private boolean isNotSamePerson(Besuch visit1, Besuch visit2) {
-        return !visit1.getVisitor().getName().equalsIgnoreCase(visit2.getVisitor().getName());
+        return !(visit1.getVisitor().getId() == visit2.getVisitor().getId());
     }
 
+    private boolean isDuringVisit(LocalDateTime timeStamp, Besuch visit) {
+        return visit.getStart().isEqual(timeStamp) ||
+                visit.getEnd().isEqual(timeStamp) ||
+                (visit.getStart().isBefore(timeStamp) && visit.getEnd().isAfter(timeStamp));
+    }
+
+    private Ort getPlaceByID(int id) {
+        return places.stream().filter(place -> place.getId() == id).toList().get(0);
+    }
+
+    private String castToOutputFormat(List<String> input) {
+        StringBuilder sb = new StringBuilder();
+        input.forEach(string -> sb.append(string).append(", "));
+        sb.setLength(sb.length() - 2);
+        return sb.toString();
+    }
 }
