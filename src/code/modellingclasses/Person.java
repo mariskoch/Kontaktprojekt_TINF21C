@@ -1,4 +1,4 @@
-package code.OO;
+package code.modellingclasses;
 
 public class Person {
     private final int id;

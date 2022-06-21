@@ -1,8 +1,8 @@
 package tests.code;
 
-import code.OO.Besuch;
-import code.OO.Ort;
-import code.OO.Person;
+import code.modellingclasses.Besuch;
+import code.modellingclasses.Ort;
+import code.modellingclasses.Person;
 import code.ParsingHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,13 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReadInputTests {
+    private final String TESTDATA_SMALL = "src/tests/testresources/testdata_small.db";
+    private final String TESTDATA_EMPTY = "src/tests/testresources/testdata_empty.db";
 
     @Test
     public void testReadInput_People() {
         List<Person> expected = new ArrayList<>();
         expected.add(new Person(1, "Mia"));
         expected.add(new Person(2, "Emilia"));
-        ParsingHelper ph = new ParsingHelper("src/tests/testresources/testdata.db");
+        ParsingHelper ph = new ParsingHelper(TESTDATA_SMALL);
         List<Person> actual = ph.getPeople();
         Assertions.assertEquals(expected.size(), actual.size());
         for (int i = 0; i < expected.size(); i++) {
@@ -29,7 +31,7 @@ public class ReadInputTests {
 
     @Test
     public void testReadInput_People_Empty() {
-        ParsingHelper ph = new ParsingHelper("src/tests/testresources/testdata_empty.db");
+        ParsingHelper ph = new ParsingHelper(TESTDATA_EMPTY);
         List<Person> actual = ph.getPeople();
         Assertions.assertEquals(0, actual.size());
     }
@@ -39,7 +41,7 @@ public class ReadInputTests {
         List<Ort> expected = new ArrayList<>();
         expected.add(new Ort(1, "BÃ¤ckerei", false));
         expected.add(new Ort(2, "Supermarkt", false));
-        ParsingHelper ph = new ParsingHelper("src/tests/testresources/testdata.db");
+        ParsingHelper ph = new ParsingHelper(TESTDATA_SMALL);
         List<Ort> actual = ph.getPlaces();
         Assertions.assertEquals(expected.size(), actual.size());
         for (int i = 0; i < expected.size(); i++) {
@@ -51,7 +53,7 @@ public class ReadInputTests {
 
     @Test
     public void testReadInput_Places_Empty() {
-        ParsingHelper ph = new ParsingHelper("src/tests/testresources/testdata_empty.db");
+        ParsingHelper ph = new ParsingHelper(TESTDATA_EMPTY);
         List<Ort> actual = ph.getPlaces();
         Assertions.assertEquals(0, actual.size());
     }
@@ -67,7 +69,7 @@ public class ReadInputTests {
                 LocalDateTime.of(2021,5,15,15,0,1,0),
                 new Person(2, "Emilia"),
                 new Ort(1, "BÃ¤ckerei", false)));
-        ParsingHelper ph = new ParsingHelper("src/tests/testresources/testdata.db");
+        ParsingHelper ph = new ParsingHelper(TESTDATA_SMALL);
         List<Besuch> actual = ph.getVisits();
         Assertions.assertEquals(expected.size(), actual.size());
         for (int i = 0; i < expected.size(); i++) {
@@ -83,7 +85,7 @@ public class ReadInputTests {
 
     @Test
     public void testReadInput_Visits_Empty() {
-        ParsingHelper ph = new ParsingHelper("src/tests/testresources/testdata_empty.db");
+        ParsingHelper ph = new ParsingHelper(TESTDATA_EMPTY);
         List<Besuch> actual = ph.getVisits();
         Assertions.assertEquals(0, actual.size());
     }

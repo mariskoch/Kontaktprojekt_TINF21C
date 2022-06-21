@@ -1,8 +1,8 @@
 package code;
 
-import code.OO.Besuch;
-import code.OO.Ort;
-import code.OO.Person;
+import code.modellingclasses.Besuch;
+import code.modellingclasses.Ort;
+import code.modellingclasses.Person;
 import code.utils.FileUtils;
 
 import java.time.LocalDateTime;

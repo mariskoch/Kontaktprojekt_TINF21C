@@ -1,8 +1,8 @@
 package code;
 
-import code.OO.Besuch;
-import code.OO.Ort;
-import code.OO.Person;
+import code.modellingclasses.Besuch;
+import code.modellingclasses.Ort;
+import code.modellingclasses.Person;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -40,7 +40,8 @@ public class ContactTracingManager {
         } else if (args[0].startsWith("--besucher=")) {
             return castToOutputFormat(visitorAndContacts(parsedArgs));
         } else {
-            return "Unknown argument";
+            throw new RuntimeException("Unknown argument. Please enter one argument of:\n" +
+                    "\"--personensuche=\", \"--ortssuche=\", \"--kontaktperson=\", \"--besucher=\"");
         }
     }
 
@@ -96,6 +97,7 @@ public class ContactTracingManager {
     }
 
     private List<String> parseArgument(String arg) {
+        if (arg.split("=").length < 2) return new ArrayList<>(List.of(arg));
         return Arrays.stream(arg.split("=")[1].split(","))
                 .map(string -> string.replaceAll("\"", "").trim())
                 .toList();

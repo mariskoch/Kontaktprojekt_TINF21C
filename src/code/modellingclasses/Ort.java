@@ -1,4 +1,4 @@
-package code.OO;
+package code.modellingclasses;
 
 public class Ort {
     private final int id;
