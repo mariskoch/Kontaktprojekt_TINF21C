@@ -22,6 +22,7 @@ public class ParsingHelper {
     }
 
     private void parseToObject() {
+        if (input.size()==0) return;
         final int[] classFlag = {0};
         input.remove(0);
         input.forEach(string -> {
