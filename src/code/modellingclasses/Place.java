@@ -1,11 +1,11 @@
 package code.modellingclasses;
 
-public class Ort {
+public class Place {
     private final int id;
     private final String name;
     private final boolean isOutside;
 
-    public Ort(int id, String name, boolean isOutside) {
+    public Place(int id, String name, boolean isOutside) {
         this.id = id;
         this.name = name;
         this.isOutside = isOutside;

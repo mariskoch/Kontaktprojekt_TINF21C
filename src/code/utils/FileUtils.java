@@ -6,6 +6,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class FileUtils {
+
+    /**
+     * Takes a String referring to a file, which will be read line by line into Strings. The Content of the file will
+     * be stored and returned by a ArrayList of String.
+     * @param filepath Path to *.db file to be read
+     * @return ArrayList containing Strings with file content
+     */
     public static ArrayList<String> readFileToMemory(String filepath) {
         BufferedReader br = null;
         String currentLine = null;

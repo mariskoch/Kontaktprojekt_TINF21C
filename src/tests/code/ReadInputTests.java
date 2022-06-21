@@ -1,7 +1,7 @@
 package tests.code;
 
-import code.modellingclasses.Besuch;
-import code.modellingclasses.Ort;
+import code.modellingclasses.Visit;
+import code.modellingclasses.Place;
 import code.modellingclasses.Person;
 import code.ParsingHelper;
 import org.junit.jupiter.api.Assertions;
@@ -38,11 +38,11 @@ public class ReadInputTests {
 
     @Test
     public void testReadInput_Places() {
-        List<Ort> expected = new ArrayList<>();
-        expected.add(new Ort(1, "BÃ¤ckerei", false));
-        expected.add(new Ort(2, "Supermarkt", false));
+        List<Place> expected = new ArrayList<>();
+        expected.add(new Place(1, "BÃ¤ckerei", false));
+        expected.add(new Place(2, "Supermarkt", false));
         ParsingHelper ph = new ParsingHelper(TESTDATA_SMALL);
-        List<Ort> actual = ph.getPlaces();
+        List<Place> actual = ph.getPlaces();
         Assertions.assertEquals(expected.size(), actual.size());
         for (int i = 0; i < expected.size(); i++) {
             Assertions.assertEquals(expected.get(i).getId(), actual.get(i).getId());
@@ -54,23 +54,23 @@ public class ReadInputTests {
     @Test
     public void testReadInput_Places_Empty() {
         ParsingHelper ph = new ParsingHelper(TESTDATA_EMPTY);
-        List<Ort> actual = ph.getPlaces();
+        List<Place> actual = ph.getPlaces();
         Assertions.assertEquals(0, actual.size());
     }
 
     @Test
     public void testReadInput_Visits() {
-        List<Besuch> expected = new ArrayList<>();
-        expected.add(new Besuch(LocalDateTime.of(2021, 5, 15, 15, 0, 0, 0),
+        List<Visit> expected = new ArrayList<>();
+        expected.add(new Visit(LocalDateTime.of(2021, 5, 15, 15, 0, 0, 0),
                 LocalDateTime.of(2021, 5, 15, 16, 0, 0, 0),
                 new Person(1, "Mia"),
-                new Ort(1, "BÃ¤ckerei", false)));
-        expected.add(new Besuch(LocalDateTime.of(2021, 5, 15, 14, 0, 0, 0),
+                new Place(1, "BÃ¤ckerei", false)));
+        expected.add(new Visit(LocalDateTime.of(2021, 5, 15, 14, 0, 0, 0),
                 LocalDateTime.of(2021, 5, 15, 15, 0, 1, 0),
                 new Person(2, "Emilia"),
-                new Ort(1, "BÃ¤ckerei", false)));
+                new Place(1, "BÃ¤ckerei", false)));
         ParsingHelper ph = new ParsingHelper(TESTDATA_SMALL);
-        List<Besuch> actual = ph.getVisits();
+        List<Visit> actual = ph.getVisits();
         Assertions.assertEquals(expected.size(), actual.size());
         for (int i = 0; i < expected.size(); i++) {
             Assertions.assertTrue(expected.get(i).getStart().isEqual(actual.get(i).getStart()));
@@ -86,7 +86,7 @@ public class ReadInputTests {
     @Test
     public void testReadInput_Visits_Empty() {
         ParsingHelper ph = new ParsingHelper(TESTDATA_EMPTY);
-        List<Besuch> actual = ph.getVisits();
+        List<Visit> actual = ph.getVisits();
         Assertions.assertEquals(0, actual.size());
     }
 }

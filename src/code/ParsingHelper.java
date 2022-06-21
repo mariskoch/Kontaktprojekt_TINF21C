@@ -1,7 +1,7 @@
 package code;
 
-import code.modellingclasses.Besuch;
-import code.modellingclasses.Ort;
+import code.modellingclasses.Visit;
+import code.modellingclasses.Place;
 import code.modellingclasses.Person;
 import code.utils.FileUtils;
 
@@ -11,17 +11,16 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ParsingHelper {
-    private final List<String> input;
     private final List<Person> people = new ArrayList<>();
-    private final List<Ort> places = new ArrayList<>();
-    private final List<Besuch> visits = new ArrayList<>();
+    private final List<Place> places = new ArrayList<>();
+    private final List<Visit> visits = new ArrayList<>();
 
     public ParsingHelper(String FILEPATH) {
-        input = FileUtils.readFileToMemory(FILEPATH);
-        parseToObject();
+        parseToObject(FileUtils.readFileToMemory(FILEPATH));
     }
 
-    private void parseToObject() {
+
+    private void parseToObject(ArrayList<String> input) {
         if (input.size() == 0) return;
         final int[] classFlag = {0};
         input.remove(0);
@@ -55,8 +54,8 @@ public class ParsingHelper {
         LocalDateTime start = LocalDateTime.parse(split.get(0));
         LocalDateTime end = LocalDateTime.parse(split.get(1));
         Person visitor = getPersonByID(Integer.parseInt(split.get(2)));
-        Ort place = getPlaceByID(Integer.parseInt(split.get(3)));
-        visits.add(new Besuch(start, end, visitor, place));
+        Place place = getPlaceByID(Integer.parseInt(split.get(3)));
+        visits.add(new Visit(start, end, visitor, place));
     }
 
     private Person createPerson(List<String> info) {
@@ -65,11 +64,11 @@ public class ParsingHelper {
         return new Person(id, name);
     }
 
-    private Ort createPlace(List<String> info) {
+    private Place createPlace(List<String> info) {
         int id = Integer.parseInt(info.get(0));
         String name = info.get(1);
         boolean isOutside = info.get(2).equalsIgnoreCase("out_door");
-        return new Ort(id, name, isOutside);
+        return new Place(id, name, isOutside);
     }
 
     private List<String> splitString(String info) {
@@ -82,19 +81,31 @@ public class ParsingHelper {
         return people.stream().filter(person -> person.getId() == id).toList().get(0);
     }
 
-    private Ort getPlaceByID(int id) {
+    private Place getPlaceByID(int id) {
         return places.stream().filter(place -> place.getId() == id).toList().get(0);
     }
 
+    /**
+     *
+     * @return List of "Person" containing all parsed objects from file of filepath
+     */
     public List<Person> getPeople() {
         return people;
     }
 
-    public List<Ort> getPlaces() {
+    /**
+     *
+     * @return List of "Place" containing all parsed objects from file of filepath
+     */
+    public List<Place> getPlaces() {
         return places;
     }
 
-    public List<Besuch> getVisits() {
+    /**
+     *
+     * @return List of "Visit" containing all parsed objects from file of filepath
+     */
+    public List<Visit> getVisits() {
         return visits;
     }
 }

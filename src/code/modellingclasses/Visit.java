@@ -2,13 +2,13 @@ package code.modellingclasses;
 
 import java.time.LocalDateTime;
 
-public class Besuch {
+public class Visit {
     private final LocalDateTime start;
     private final LocalDateTime end;
     private final Person visitor;
-    private final Ort place;
+    private final Place place;
 
-    public Besuch(LocalDateTime start, LocalDateTime end, Person visitor, Ort place) {
+    public Visit(LocalDateTime start, LocalDateTime end, Person visitor, Place place) {
         this.start = start;
         this.end = end;
         this.visitor = visitor;
@@ -32,7 +32,7 @@ public class Besuch {
         return visitor;
     }
 
-    public Ort getPlace() {
+    public Place getPlace() {
         return place;
     }
 }

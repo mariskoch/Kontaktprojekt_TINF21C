@@ -1,7 +1,7 @@
 package code;
 
-import code.modellingclasses.Besuch;
-import code.modellingclasses.Ort;
+import code.modellingclasses.Visit;
+import code.modellingclasses.Place;
 import code.modellingclasses.Person;
 
 import java.time.LocalDateTime;
@@ -13,15 +13,21 @@ import java.util.stream.Stream;
 
 public class ContactTracingManager {
     private final List<Person> people;
-    private final List<Ort> places;
-    private final List<Besuch> visits;
+    private final List<Place> places;
+    private final List<Visit> visits;
 
-    public ContactTracingManager(List<Person> people, List<Ort> places, List<Besuch> visits) {
+    public ContactTracingManager(List<Person> people, List<Place> places, List<Visit> visits) {
         this.people = people;
         this.places = places;
         this.visits = visits;
     }
 
+    /**
+     * This is the central method of the ContactTracingManager. It takes the arguments given to the main method,
+     * parses those and processes them to return one String with all Information in it according to the exercise specification.
+     * @param args Arguments given to main
+     * @return String containing information according to exercise specification
+     */
     public String processInput(String[] args) {
         List<String> parsedArgs;
         if (args.length != 1) {
@@ -45,6 +51,11 @@ public class ContactTracingManager {
         }
     }
 
+    /**
+     * Finds a certain Person by looking through every single Person and checking whether their
+     * name contains the given key in the parsedArgs at index 0. After that it builds a String with the overwritten
+     * .toString() method of Person.
+     */
     private String findPerson(List<String> parsedArgs) {
         StringBuilder sb = new StringBuilder();
         people.stream()
@@ -62,7 +73,7 @@ public class ContactTracingManager {
     }
 
     private List<String> contactPerson(List<String> parsedArgs) {
-        List<Besuch> visitsByPerson = visits.stream()
+        List<Visit> visitsByPerson = visits.stream()
                 .filter(visit -> visit.getVisitor().getId() == Integer.parseInt(parsedArgs.get(0)))
                 .toList();
         return visits.stream()
@@ -79,11 +90,11 @@ public class ContactTracingManager {
     }
 
     private List<String> visitorAndContacts(List<String> parsedArgs) {
-        Ort place = getPlaceByID(Integer.parseInt(parsedArgs.get(0)));
+        Place place = getPlaceByID(Integer.parseInt(parsedArgs.get(0)));
         LocalDateTime timeStamp = LocalDateTime.parse(parsedArgs.get(1));
         List<Person> peopleAtPlace = visits.stream()
                 .filter(visit -> visit.getPlace().getId() == place.getId() && isDuringVisit(timeStamp, visit))
-                .map(Besuch::getVisitor)
+                .map(Visit::getVisitor)
                 .distinct()
                 .collect(Collectors.toCollection(ArrayList::new));
         List<String> contactPeople = new ArrayList<>();
@@ -103,25 +114,25 @@ public class ContactTracingManager {
                 .toList();
     }
 
-    private boolean doVisitsOverlap(Besuch visit1, Besuch visit2) {
+    private boolean doVisitsOverlap(Visit visit1, Visit visit2) {
         return visit1.getStart().isBefore(visit2.getEnd()) && visit1.getEnd().isAfter(visit2.getStart());
     }
 
-    private boolean areVisitsInSamePlace(Besuch visit1, Besuch visit2) {
+    private boolean areVisitsInSamePlace(Visit visit1, Visit visit2) {
         return visit1.getPlace().equals(visit2.getPlace());
     }
 
-    private boolean isNotSamePerson(Besuch visit1, Besuch visit2) {
+    private boolean isNotSamePerson(Visit visit1, Visit visit2) {
         return !(visit1.getVisitor().getId() == visit2.getVisitor().getId());
     }
 
-    private boolean isDuringVisit(LocalDateTime timeStamp, Besuch visit) {
+    private boolean isDuringVisit(LocalDateTime timeStamp, Visit visit) {
         return visit.getStart().isEqual(timeStamp) ||
                 visit.getEnd().isEqual(timeStamp) ||
                 (visit.getStart().isBefore(timeStamp) && visit.getEnd().isAfter(timeStamp));
     }
 
-    private Ort getPlaceByID(int id) {
+    private Place getPlaceByID(int id) {
         return places.stream().filter(place -> place.getId() == id).toList().get(0);
     }
 
