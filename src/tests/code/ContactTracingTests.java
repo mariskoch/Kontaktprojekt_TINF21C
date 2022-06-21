@@ -16,18 +16,14 @@ public class ContactTracingTests {
 
     @Test
     public void testProcessInput_InvalidAmountOfArguments() {
-        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
-            ctm.processInput(new String[]{});
-        });
+        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> ctm.processInput(new String[]{}));
         Assertions.assertEquals("Invalid amount of arguments. Please enter one argument of:\n" +
                 "\"--personensuche=\", \"--ortssuche=\", \"--kontaktperson=\", \"--besucher=\"", thrown.getMessage());
     }
 
     @Test
     public void testProcessInput_UnknownArgument() {
-        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
-            ctm.processInput(new String[]{"this is an unknown argument"});
-        });
+        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> ctm.processInput(new String[]{"this is an unknown argument"}));
         Assertions.assertEquals("Unknown argument. Please enter one argument of:\n" +
                 "\"--personensuche=\", \"--ortssuche=\", \"--kontaktperson=\", \"--besucher=\"", thrown.getMessage());
     }
