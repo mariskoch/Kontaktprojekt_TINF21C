@@ -18,9 +18,6 @@ public class ReadInputTests {
         List<Person> expected = new ArrayList<>();
         expected.add(new Person(1, "Mia"));
         expected.add(new Person(2, "Emilia"));
-        expected.add(new Person(3, "Hannah"));
-        expected.add(new Person(4, "Emma"));
-        expected.add(new Person(5, "Sophia"));
         ParsingHelper ph = new ParsingHelper("src/tests/testresources/testdata.db");
         List<Person> actual = ph.getPeople();
         Assertions.assertEquals(expected.size(), actual.size());
