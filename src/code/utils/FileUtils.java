@@ -15,7 +15,7 @@ public class FileUtils {
      */
     public static ArrayList<String> readFileToMemory(String filepath) {
         BufferedReader br = null;
-        String currentLine = null;
+        String currentLine;
         ArrayList<String> fileContents = new ArrayList<>();
 
         try {
