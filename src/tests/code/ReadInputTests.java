@@ -62,11 +62,11 @@ public class ReadInputTests {
     public void testReadInput_Visits() {
         List<Besuch> expected = new ArrayList<>();
         expected.add(new Besuch(LocalDateTime.of(2021, 5, 15, 15, 0, 0, 0),
-                LocalDateTime.of(2021,5,15,16,0,0,0),
+                LocalDateTime.of(2021, 5, 15, 16, 0, 0, 0),
                 new Person(1, "Mia"),
                 new Ort(1, "BÃ¤ckerei", false)));
-        expected.add(new Besuch(LocalDateTime.of(2021,5,15,14,0,0,0),
-                LocalDateTime.of(2021,5,15,15,0,1,0),
+        expected.add(new Besuch(LocalDateTime.of(2021, 5, 15, 14, 0, 0, 0),
+                LocalDateTime.of(2021, 5, 15, 15, 0, 1, 0),
                 new Person(2, "Emilia"),
                 new Ort(1, "BÃ¤ckerei", false)));
         ParsingHelper ph = new ParsingHelper(TESTDATA_SMALL);
