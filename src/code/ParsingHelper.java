@@ -28,7 +28,7 @@ public class ParsingHelper {
      * Parses Strings from file into Objects in people, places and visits lists
      * @param input lines from file
      */
-    private void parseToObject(ArrayList<String> input) {
+    private void parseToObject(List<String> input) {
         if (input.size() == 0) return;
         final int[] classFlag = {0};
         //remove first line, since it is a "New_Entity: ..." line

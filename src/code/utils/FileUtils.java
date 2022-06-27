@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FileUtils {
 
@@ -13,7 +14,7 @@ public class FileUtils {
      * @param filepath Path to *.db file to be read
      * @return ArrayList containing Strings with file content line by line
      */
-    public static ArrayList<String> readFileToMemory(String filepath) {
+    public static List<String> readFileToMemory(String filepath) {
         BufferedReader br = null;
         String currentLine;
         ArrayList<String> fileContents = new ArrayList<>();
